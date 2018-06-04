@@ -1,27 +1,39 @@
 {
   "project_info": {
-    "project_number": "966091585455",
-    "firebase_url": "https://savetap-1526906709754.firebaseio.com",
-    "project_id": "savetap-1526906709754",
-    "storage_bucket": "savetap-1526906709754.appspot.com"
+    "project_number": "81884783069",
+    "firebase_url": "https://usertrackingonline.firebaseio.com",
+    "project_id": "usertrackingonline",
+    "storage_bucket": "usertrackingonline.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:966091585455:android:404e13aa06be26f0",
+        "mobilesdk_app_id": "1:81884783069:android:c7b558e6ab809da7",
         "android_client_info": {
-          "package_name": "com.hexacta.savetap"
+          "package_name": "com.hexacta.trackonline"
         }
       },
       "oauth_client": [
         {
-          "client_id": "966091585455-ikbg59tgujl3u93ml70or9rr1ivo7929.apps.googleusercontent.com",
+          "client_id": "81884783069-25hcnfl9opak53i1e93t9b71q1g5seq6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hexacta.trackonline",
+            "certificate_hash": "923057a28d494c3601136dbaacca6c5857d9a361"
+          }
+        },
+        {
+          "client_id": "81884783069-hivkaln507vto4mc5pdb8k0tkahumokq.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "81884783069-hivkaln507vto4mc5pdb8k0tkahumokq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAv9eygzpAU6__wuph2__VDZl7Y_G4d9QQ"
+          "current_key": "AIzaSyBlow5XqUocUhBm0o7BIbp7jWY8EMtfNnA"
         }
       ],
       "services": {
@@ -29,8 +41,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81884783069-hivkaln507vto4mc5pdb8k0tkahumokq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

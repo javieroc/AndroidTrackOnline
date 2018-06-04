@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.hexacta.trackonline.main.SenderActivity;
 import com.hexacta.trackonline.R;
 import com.hexacta.trackonline.users.ListOnlineActivity;
 

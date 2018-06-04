@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SaveTap</string>
+    <string name="app_name">TrackingUsersLocation</string>
     <string name="log_in">Ingresar</string>
     <string name="enable_location_settings">No se puede acceder a los servicios de localización</string>
     <string name="hint_username">Your Username</string>
@@ -10,4 +10,5 @@
     <string name="action_settings">Settings test</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_map_tracking">Map</string>
 </resources>
