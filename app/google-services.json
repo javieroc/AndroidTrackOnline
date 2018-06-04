@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "741189270727",
+    "firebase_url": "https://mysafetap.firebaseio.com",
+    "project_id": "mysafetap",
+    "storage_bucket": "mysafetap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741189270727:android:404e13aa06be26f0",
+        "android_client_info": {
+          "package_name": "com.hexacta.savetap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "741189270727-5v71fuljepfgnl8okile7pfkiocl90si.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hexacta.savetap",
+            "certificate_hash": "923057a28d494c3601136dbaacca6c5857d9a361"
+          }
+        },
+        {
+          "client_id": "741189270727-obeloa6l91f8sfeq6t1lt73f0k2t3her.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "741189270727-obeloa6l91f8sfeq6t1lt73f0k2t3her.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACloM26kFL96T50c-clet7WFMHeWm704k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "741189270727-obeloa6l91f8sfeq6t1lt73f0k2t3her.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

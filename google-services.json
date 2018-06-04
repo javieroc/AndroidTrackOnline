@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "966091585455",
+    "firebase_url": "https://savetap-1526906709754.firebaseio.com",
+    "project_id": "savetap-1526906709754",
+    "storage_bucket": "savetap-1526906709754.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966091585455:android:404e13aa06be26f0",
+        "android_client_info": {
+          "package_name": "com.hexacta.savetap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966091585455-ikbg59tgujl3u93ml70or9rr1ivo7929.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv9eygzpAU6__wuph2__VDZl7Y_G4d9QQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

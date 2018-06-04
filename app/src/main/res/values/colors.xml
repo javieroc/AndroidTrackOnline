@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#9E9E9E</color>
+    <color name="colorPrimaryLight">#F5F5F5</color>
+    <color name="colorPrimaryDark">#616161</color>
+    <color name="colorAccent">#E040FB</color>
+    <color name="colorSecondaryDark">#CDDC39</color>
+    <color name="colorSecundary">#dce775</color>
+    <color name="colorPrimaryText">#212121</color>
+    <color name="pulseColor">#13E864</color>
+</resources>
