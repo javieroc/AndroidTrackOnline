@@ -1,6 +1,11 @@
 package com.hexacta.trackonline.users;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,9 +18,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,13 +39,21 @@ import com.hexacta.trackonline.R;
 
 public class ListOnlineActivity extends AppCompatActivity {
 
+  private String TAG = "TrackingUserOnline";
+
   // Firebase
-  DatabaseReference onlineRef, currentUserRef, counterRef;
+  DatabaseReference onlineRef, currentUserRef, counterRef, locationsRef;
   FirebaseRecyclerAdapter<User, ListOnlineViewHolder> mAdapter;
 
   // View
   RecyclerView listOnline;
   RecyclerView.LayoutManager layoutManager;
+
+  //Location
+  private static final int PERMISSIONS_REQUEST_CODE = 7171;
+  private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 7171;
+  private LocationRequest mLocationRequest;
+  private Location mLastLocation;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +71,79 @@ public class ListOnlineActivity extends AppCompatActivity {
     setSupportActionBar(toolbar);
 
     // Firebase
+    locationsRef = FirebaseDatabase.getInstance().getReference("Locations");
     onlineRef = FirebaseDatabase.getInstance().getReference(".info/connected");
     counterRef = FirebaseDatabase.getInstance().getReference("lastOnline");
     currentUserRef = FirebaseDatabase.getInstance().getReference("lastOnline")
             .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
+
+    // Check permissions
+    int permission1 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+    int permission2 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+    if (permission1 != PackageManager.PERMISSION_GRANTED && permission2 != PackageManager.PERMISSION_GRANTED) {
+      ActivityCompat.requestPermissions(this, new String[]{
+              Manifest.permission.ACCESS_COARSE_LOCATION,
+              Manifest.permission.ACCESS_FINE_LOCATION
+      }, PERMISSIONS_REQUEST_CODE);
+    } else if (checkPlayServices()){
+      createLocationRequest();
+
+      displayLocation();
+    }
+
     setupSystem();
 
     updateList();
+  }
+
+  private void displayLocation() {
+    // Check permissions
+    int permission1 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+    int permission2 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+    if (permission1 != PackageManager.PERMISSION_GRANTED && permission2 != PackageManager.PERMISSION_GRANTED) {
+      return;
+    }
+    FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
+    client.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+      @Override
+      public void onLocationResult(LocationResult locationResult) {
+        mLastLocation = locationResult.getLastLocation();
+        if (mLastLocation != null) {
+          locationsRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                  .setValue(new Tracking(FirebaseAuth.getInstance().getCurrentUser().getEmail(),
+                          FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                          String.valueOf(mLastLocation.getLatitude()),
+                          String.valueOf(mLastLocation.getLongitude())));
+        } else {
+          Toast.makeText(ListOnlineActivity.this, "Couldn't get the Location", Toast.LENGTH_SHORT).show();
+        }
+      }
+    }, null);
+  }
+
+  private void createLocationRequest() {
+    mLocationRequest = new LocationRequest();
+    mLocationRequest.setInterval(5000);
+    mLocationRequest.setFastestInterval(3000);
+    mLocationRequest.setSmallestDisplacement(10);
+    mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+  }
+
+  private boolean checkPlayServices() {
+    GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+    int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+    if (resultCode != ConnectionResult.SUCCESS) {
+      if (apiAvailability.isUserResolvableError(resultCode)) {
+        apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                .show();
+      } else {
+        Log.i(TAG, "This device is not supported");
+        finish();
+      }
+      return false;
+    }
+    return true;
   }
 
   private void updateList() {
