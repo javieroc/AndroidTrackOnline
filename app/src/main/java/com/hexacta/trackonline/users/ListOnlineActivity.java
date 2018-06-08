@@ -1,6 +1,7 @@
 package com.hexacta.trackonline.users;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hexacta.trackonline.MapTrackingActivity;
 import com.hexacta.trackonline.R;
 
 public class ListOnlineActivity extends AppCompatActivity {
@@ -50,7 +52,7 @@ public class ListOnlineActivity extends AppCompatActivity {
   RecyclerView.LayoutManager layoutManager;
 
   //Location
-  private static final int PERMISSIONS_REQUEST_CODE = 7171;
+  private static final int MY_PERMISSIONS_REQUEST_CODE = 7171;
   private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 7171;
   private LocationRequest mLocationRequest;
   private Location mLastLocation;
@@ -85,7 +87,7 @@ public class ListOnlineActivity extends AppCompatActivity {
       ActivityCompat.requestPermissions(this, new String[]{
               Manifest.permission.ACCESS_COARSE_LOCATION,
               Manifest.permission.ACCESS_FINE_LOCATION
-      }, PERMISSIONS_REQUEST_CODE);
+      }, MY_PERMISSIONS_REQUEST_CODE);
     } else if (checkPlayServices()){
       createLocationRequest();
 
@@ -116,7 +118,8 @@ public class ListOnlineActivity extends AppCompatActivity {
                           String.valueOf(mLastLocation.getLatitude()),
                           String.valueOf(mLastLocation.getLongitude())));
         } else {
-          Toast.makeText(ListOnlineActivity.this, "Couldn't get the Location", Toast.LENGTH_SHORT).show();
+          // Toast.makeText(ListOnlineActivity.this, "Couldn't get the Location", Toast.LENGTH_SHORT).show();
+          Log.d("TEST", "Couldn't get the Location");
         }
       }
     }, null);
@@ -151,8 +154,24 @@ public class ListOnlineActivity extends AppCompatActivity {
             new FirebaseRecyclerOptions.Builder<User>().setQuery(counterRef, User.class).build();
     mAdapter = new FirebaseRecyclerAdapter<User, ListOnlineViewHolder>(options) {
       @Override
-      protected void onBindViewHolder(@NonNull ListOnlineViewHolder holder, int position, @NonNull User model) {
+      protected void onBindViewHolder(@NonNull ListOnlineViewHolder holder, int position, @NonNull final User model) {
         holder.txtEmail.setText(model.getEmail());
+
+        // Item click of recycler view.
+        holder.itemClickListener = new ItemClickListener() {
+          @Override
+          public void onClick(View view, int position) {
+            // If model is current user, not set click event.
+            if (!model.getEmail().equals(FirebaseAuth.getInstance().getCurrentUser().getEmail())) {
+              Intent map = new Intent(ListOnlineActivity.this, MapTrackingActivity.class);
+              map.putExtra("email", model.getEmail());
+              map.putExtra("lat", mLastLocation.getLatitude());
+              map.putExtra("lng", mLastLocation.getLongitude());
+              startActivity(map);
+              // Toast.makeText(ListOnlineActivity.this, "Email clicked: " + model.getEmail(), Toast.LENGTH_SHORT).show();
+            }
+          }
+        };
       }
 
       @NonNull
@@ -235,5 +254,19 @@ public class ListOnlineActivity extends AppCompatActivity {
   protected void onStop() {
     super.onStop();
     mAdapter.stopListening();
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    switch (requestCode) {
+      case MY_PERMISSIONS_REQUEST_CODE:
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+          if (checkPlayServices()) {
+            createLocationRequest();
+
+            displayLocation();
+          }
+        }
+    }
   }
 }
